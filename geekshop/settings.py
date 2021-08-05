@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #'social_django',
     'mainapp',
     'authapp',
     'basketapp',
@@ -135,6 +136,9 @@ MEDIA_URL = '/media/'
 AUTH_USER_MODEL = 'authapp.ShopUser'
 
 LOGIN_URL = '/auth/login/'
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = "7919645"
+SOCIAL_AUTH_VK_OAUTH2_SECRET = "jyGH8TINtk9TBd5bNn4Q"
 
 DOMAIN = 'http://127.0.0.1:8000'
 
