@@ -156,7 +156,6 @@ EMAIL_FILE_PATH = 'tmp/mails/'
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.vk.VKOAuth2',
-
 )
 
 SOCIAL_AUTH_VK_OAUTH2_KEY = "7919645"
