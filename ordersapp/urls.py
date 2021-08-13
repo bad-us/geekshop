@@ -1,15 +1,16 @@
-from django.urls import path
-from ordersapp import views
-import ordersapp as ordersapp
-from ordersapp.apps import OrdersappConfig
+from django.urls import path, re_path
 
-app_name = 'ordersapp'  # 4
+from ordersapp import views as ordersapp
+
+app_name = 'ordersapp'
 
 urlpatterns = [
-    path('', views.OrderList.as_view(), name="orders_list"),
-    path('/read/<pk>/', views.OrderRead.as_view(), name="order_read"),
-    path('/update/<pk>/', views.OrderItemsUpdate.as_view(), name="order_update"),
-    path('/delete/<pk>/', views.OrderDelete.as_view(), name="order_delete"),
-    path('create/', views.OrderItemsCreate.as_view(), name="order_create"),
-    path('forming/complete\<pk>/', views.order_forming_complete, name="order_forming_complete"),
+    path('', ordersapp.OrderListView.as_view(), name='orders_list'),
+    path('create/', ordersapp.OrderCreateView.as_view(), name='order_create'),
+    path('read/<int:pk>/', ordersapp.OrderDetailView.as_view(), name='order_read'),
+    path('update/<int:pk>/', ordersapp.OrderUpdateView.as_view(), name='order_update'),
+    path('delete/<int:pk>/', ordersapp.OrderDeleteView.as_view(), name='order_delete'),
+    path('product/<int:pk>/price/', ordersapp.get_product_price, name='product_price'),
+
+    path('forming/complite/<int:pk>/', ordersapp.order_forming_complete, name='order_forming_complete'),
 ]
