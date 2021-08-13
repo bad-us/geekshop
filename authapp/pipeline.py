@@ -61,9 +61,8 @@ def save_user_profile(backend, user, response, *args, **kwargs):
             url = data['photo_max']
             pars = requests.get(url)
             if pars.status_code == 200:
-                # image_name = url.split("/")[-1].split("?")[0]
-                # image_name = user.pk
-                photo_name = f'users_avatars/{user.pk}'
+                image_name = url.split("/")[-1].split("?")[0]
+                photo_name = f'users_avatars/{image_name}'
                 with open(os.path.join(settings.BASE_DIR, f'media/{photo_name}'), "wb") as f:
                     f.write(pars.content)
                 user.avatar = photo_name
