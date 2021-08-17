@@ -1,21 +1,30 @@
 {% extends 'authapp/base.html' %}
 {% load static %}
 
-
 {% block content %}
     <form class="form-horizontal" action="{% url 'auth:login' %}" method="post">
         {% csrf_token %}
         {% if next %}
-            <input type="hidden" name="next" value="{{ next }}">
+            <input type="hidden" name="next" value={{ next }}>
         {% endif %}
         {{ login_form.as_p }}
         <br>
         <input class="form-control" type="submit" value="войти">
     </form>
     <button class="btn btn-round form-control">
-        <a href="{% url 'auth:register' %}" class="">
-            зарегистрироваться
+        <a href="{% url 'auth:register' %}">
+            регистрация
+        </a>
+    </button>
+    <button class="btn btn-round form-control">
+        <a href="{% url 'social:begin' 'vk-oauth2' %}?next=/">
+            авторизация через VK
         </a>
     </button>
 
+    <button class="btn btn-round form-control">
+        <a href="{% url 'social:begin' 'google-oauth2' %}?next=/">
+            Google+ sign in
+        </a>
+    </button>
 {% endblock %}
