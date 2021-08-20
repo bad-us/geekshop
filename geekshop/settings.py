@@ -22,7 +22,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'r(s=@b^f@3ov9s12^#_9#ym%le#ww7h%)^86835acq3k#syqct'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -220,4 +221,3 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = GOOGLE_PLUS['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET
 
 # print(GOOGLE_PLUS['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY'])
 # print(GOOGLE_PLUS['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET'])
-
