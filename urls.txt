@@ -1,7 +1,0 @@
-http://5.63.157.29/order/update/1/
-http://5.63.157.29/order/update/3/
-http://5.63.157.29/order/update/4/
-http://5.63.157.29/order/update/5/
-http://5.63.157.29/order/update/8/
-http://5.63.157.29/order/update/9/
-http://5.63.157.29/order/update/10/
