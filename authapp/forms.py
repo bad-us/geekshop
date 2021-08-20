@@ -1,20 +1,20 @@
 import hashlib
 import random
 
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from .models import ShopUser, ShopUserProfile
 
-from django.contrib.auth.forms import UserChangeForm
+from authapp.models import ShopUser
+from .models import ShopUserProfile
 
 
 class ShopUserLoginForm(AuthenticationForm):
     class Meta:
         model = ShopUser
-        fields = ('username', 'password')
+        fields = ('username', 'password',)
 
     def __init__(self, *args, **kwargs):
-        super(ShopUserLoginForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
@@ -25,7 +25,7 @@ class ShopUserRegisterForm(UserCreationForm):
         fields = ('username', 'first_name', 'password1', 'password2', 'email', 'age', 'avatar')
 
     def __init__(self, *args, **kwargs):
-        super(ShopUserRegisterForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
@@ -34,7 +34,22 @@ class ShopUserRegisterForm(UserCreationForm):
         data = self.cleaned_data['age']
         if data < 18:
             raise forms.ValidationError("Вы слишком молоды!")
+        return data
 
+    def clean_first_name(self):
+        """
+        т.к. почта валидируется автоматом, и до моих проверок не доходит, сделал хоть что-то...
+        проверка Имени -  не состоит ли только из чисел... :(
+        """
+        data = self.cleaned_data['first_name']
+        if data.isdigit():
+            raise forms.ValidationError("Недопустимое имя")
+        return data
+
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        if ShopUser.objects.filter(email=data).exists():
+            raise forms.ValidationError("Email exists")
         return data
 
     def save(self):
@@ -49,13 +64,12 @@ class ShopUserRegisterForm(UserCreationForm):
 class ShopUserEditForm(UserChangeForm):
     class Meta:
         model = ShopUser
-        fields = ('username', 'first_name', 'email', 'age', 'avatar', 'password')
+        fields = ('username', 'email', 'first_name', 'age', 'avatar', 'password',)
 
     def __init__(self, *args, **kwargs):
-        super(ShopUserEditForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-            field.help_text = ''
             if field_name == 'password':
                 field.widget = forms.HiddenInput()
 
@@ -63,17 +77,27 @@ class ShopUserEditForm(UserChangeForm):
         data = self.cleaned_data['age']
         if data < 18:
             raise forms.ValidationError("Вы слишком молоды!")
+        return data
 
+    def clean_first_name(self):
+        """
+        т.к. почта валидируется автоматом, и до моих проверок не доходит, сделал хоть что-то...
+        проверка Имени -  не состоит ли только из чисел
+        """
+        data = self.cleaned_data['first_name']
+        if data.isdigit():
+            raise forms.ValidationError("Недопустимое имя")
         return data
 
 
-class ShopUserProfileEdit(forms.ModelForm):
+class ShopUserProfilesEditForm(forms.ModelForm):
     class Meta:
         model = ShopUserProfile
-        fields = ('tagline', 'aboutMe', 'gender',)
+        fields = ('tag_line', 'about_me', 'gender',)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
             field.help_text = ''
+
