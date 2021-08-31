@@ -17,7 +17,13 @@ from geekshop.settings import BASE_DIR
 
 def get_hot_product():
     products_list = Product.objects.filter(is_active=True)
-    return random.choice(list(products_list))
+    try:
+        return random.choice(list(products_list))
+    except IndexError:
+        default_category = ProductCategory.objects.create(name='default')
+        default_product = Product.objects.create(category=default_category, name='default')
+        print(default_product)
+        return default_product
 
 
 def get_same_products(hot_product):
@@ -112,7 +118,7 @@ def main(request):
     return render(request, 'mainapp/index.html', content)
 
 
-@never_cache
+# @never_cache
 def products(request, pk=None):
     title = 'продукты'
     # links_menu = ProductCategory.objects.all()
@@ -161,7 +167,6 @@ def products(request, pk=None):
     return render(request, 'mainapp/products.html', content)
 
 
-@never_cache
 def product(request, pk):
     # links_menu = ProductCategory.objects.all()
     links_menu = get_links_menu()
